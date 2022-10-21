@@ -1,0 +1,29 @@
+# -*- mode: python -*-
+# vi: set ft=python :
+
+load("@pip_deps//:requirements.bzl", "requirement")
+
+load("@drake//tools/lint:lint.bzl", "add_lint_tests")
+load("@drake//tools/skylark:py.bzl", "py_library", "py_test")
+
+py_library(
+    name = "drake_gym",
+    srcs = ["drake_gym.py"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@drake//bindings/pydrake",
+        requirement("gym"),
+    ],
+)
+
+py_test(
+    name = "drake_gym_test",
+    srcs = ["test/drake_gym_test.py"],
+    deps = [
+        ":drake_gym",
+        "//drake_gym/examples:box_flipup",
+        requirement("stable-baselines3"),
+    ],
+)
+
+add_lint_tests()
